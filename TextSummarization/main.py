@@ -5,12 +5,13 @@ from TextSummarization.ProcessStopwords import processStopwords
 from TextSummarization.Utils import getDictionaryAsString
 from TextSummarization.Utils import convertListToString
 from TextSummarization.Utils import helper
-from TextSummarization.Constants import Type
+from TextSummarization.Constants import Type, DictionaryType
 from TextSummarization.BaseNewsArticle import BaseNewsArticle
 from textblob import TextBlob
 from TextSummarization.nltk_implementation import word_tokenize
 from TextSummarization.nltk_implementation import sentence_tokenizer
 from TextSummarization.SentimentAnalysis import SentimentAnalysis
+from TextSummarization.exportToExcel import ExportToExcel
 
 with open('dataset/test_data.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -96,6 +97,14 @@ with open('dataset/test_data.csv') as csv_file:
                 #     sentimentBlob = 0.0
                 # if sentimentBlob is TextBlob:
                 #     print(f'\n\nSentimentBlob: {sentimentBlob}\n\n')
+
+                featureDictionaries = dict()
+                featureDictionaries[DictionaryType.NOUN_FEATURE] = nounFeatureScoring
+                featureDictionaries[DictionaryType.SENTENCE_LENGTH_FEATURE] = sentenceLengthFeature
+                featureDictionaries[DictionaryType.HAS_NUMBER_FEATURE] = hasNumberFeature
+                featureDictionaries[DictionaryType.RELEVANCE_TO_TITLE_FEATURE] = relevanceToTitleFeature
+
+                ExportToExcel(article_count, featureDictionaries)
 
                 if numberOfSentences < 10:
                     print(f'Sentences: {baseNewsArticle.getArticle()}')
