@@ -25,7 +25,7 @@ class SentimentAnalysis:
             elif word in negative_words:
                 total_score -= 1
 
-        sentiment = "nuetral"
+        sentiment = "neutral"
         if total_score > 0:
                 sentiment = "positive"
         elif total_score < 0:

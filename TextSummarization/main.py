@@ -38,12 +38,16 @@ with open('dataset/test_data.csv') as csv_file:
 
                 baseNewsArticle = BaseNewsArticle(heading=heading, article=article,
                                                   summary=given_summary)
+
+                processArticle = ProcessSentences(baseNewsArticle)
+                numberOfSentences = len(processArticle.getTokenizedSentences())
+                if(numberOfSentences > 20):
+                    continue
                 print(
                     f'Article #{article_count}\nHeading:\n{heading}  \n\nSummary:\n{given_summary} '
                     f'\n\nArticle:\n{article}\n')
-                print(f'Generated Summary: \n{temp}')
+                print(f'Generated Summary: \n{temp}') #fixme uncomment later
                 e1 = time.process_time()
-                processSentences = ProcessSentences(baseNewsArticle)
                 lengthOfHeading = len(heading.strip().split(" "))
                 numberOfWordsInArticle = baseNewsArticle.getTotalNumberOfWords()
                 # e2 = time.process_time() - e1
@@ -53,21 +57,21 @@ with open('dataset/test_data.csv') as csv_file:
                 print(f'Time-total number of imp words: {time.process_time() - e1}')
                 e1 = time.process_time()
 
-                processSentences.generate_summary()
+                processArticle.generate_summary()
                 generated_summary = convertListToString(temp)
-                numberOfSentences = len(processSentences.getTokenizedSentences())
+                # numberOfSentences = len(processSentences.getTokenizedSentences()) fixme: uncomment later
                 print(f'Time-total number of sentences: {time.process_time() - e1}')
                 e1 = time.process_time()
-                termFrequency = getDictionaryAsString(processSentences.calculateTermFrequency(),
+                termFrequency = getDictionaryAsString(processArticle.calculateTermFrequency(),
                                                       Type.TERM_FREQUENCY)
                 print(f'Time-term frequency: {time.process_time() - e1}')
                 e1 = time.process_time()
-                inverseDocumentFrequency = getDictionaryAsString(processSentences.calculateInverseDocumentFrequency(),
+                inverseDocumentFrequency = getDictionaryAsString(processArticle.calculateInverseDocumentFrequency(),
                                                                  Type.INVERSE_DOCUMENT_FREQUENCY)
                 print(f'Time-idf: {time.process_time() - e1}')
                 e1 = time.process_time()
 
-                termUniqueness = getDictionaryAsString(processSentences.calculateTermUniqueness(),
+                termUniqueness = getDictionaryAsString(processArticle.calculateTermUniqueness(),
                                                        Type.TERM_UNIQUENESS)
                 print(f'Time-term uniqueness: {time.process_time() - e1}')
                 e1 = time.process_time()
@@ -78,6 +82,11 @@ with open('dataset/test_data.csv') as csv_file:
                 print(f'Time: {e2 - e1}')
                 numberOfWordsUsingCLTKLib = len(word_tokenize(baseNewsArticle.getArticle()))
                 numberOfSentencesUsingCLTKLib = len(sentence_tokenizer(baseNewsArticle.getArticle()))
+
+                nounFeatureScoring = processArticle.nounFeatureScoring()
+                sentenceLengthFeature = processArticle.sentenceLengthFeature()
+                hasNumberFeature = processArticle.hasNumbers()
+                relevanceToTitleFeature = processArticle.relevanceToTitle()
 
                 print(f' Total number of wortds in article: {numberOfWordsInArticle}'
                       f'\nNumber of imp words: {numberOfImpWords}')
@@ -101,6 +110,14 @@ with open('dataset/test_data.csv') as csv_file:
                       f'{termUniqueness}'
                       f'\nNumber of Stop words removed: '
                       f'{numberOfStopWordsRemoved}'
+                      f'\nNoun Feature: '
+                      f'{nounFeatureScoring}'
+                      f'\nSentence Length Feature: '
+                      f'{sentenceLengthFeature}'
+                      f'\nHas Number Feature Feature: '
+                      f'{hasNumberFeature}'
+                      f'\nRelevance to Title Feature: '
+                      f'{relevanceToTitleFeature}'
                       f'\nGiven Summary:{lengthOfGivenSummary}'
                     )
 
