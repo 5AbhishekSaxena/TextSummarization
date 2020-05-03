@@ -4,10 +4,8 @@ from TextSummarization.Constants import DictionaryType
 
 
 class ExportToExcel:
-
     def __init__(self, article_count, featureDictionary):
         wb = Workbook()
-
         # Set 1st Row
         self.sheet = wb.add_sheet('Sheet 1')
         self.sheet.write(0, 0, 'Sentences')
@@ -21,8 +19,6 @@ class ExportToExcel:
         sentenceLengthFeature = dict(featureDictionary[DictionaryType.SENTENCE_LENGTH_FEATURE])
         hasNumberFeature = dict(featureDictionary[DictionaryType.HAS_NUMBER_FEATURE])
         relevanceToTitleFeature = dict(featureDictionary[DictionaryType.RELEVANCE_TO_TITLE_FEATURE])
-
-        sentence_column = 1
         row_count = 1
         nounColumn = 1
         sentenceLength_column = 2
@@ -36,5 +32,4 @@ class ExportToExcel:
             self.sheet.write(row_count, relevanceToTitleColumn, relevanceToTitleFeature[i])
             row_count = row_count + 1
 
-
-        wb.save(f'article - {article_count}.xlsx')
+        wb.save(f'dataset/manual-dataset/article - {article_count}.xlsx')
