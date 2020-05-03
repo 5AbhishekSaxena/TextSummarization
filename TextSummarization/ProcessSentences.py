@@ -147,6 +147,8 @@ class ProcessSentences:
 
         if len(self.sentences) < 1:
             self.sentences = self.getTokenizedSentences()
+        # print(f'\nWords: {wordList}')
+        # print(f'\n Sentences: {sentences}')
         for word in wordList:
             for sentence in self.sentences:
                 try:

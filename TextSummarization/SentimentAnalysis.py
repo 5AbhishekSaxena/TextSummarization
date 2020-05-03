@@ -16,7 +16,7 @@ class SentimentAnalysis:
     def __init__(self, summary):
         self.summary = summary
 
-    def detemineSentiment(self):
+    def determineSentiment(self):
 
         total_score = 0
         for word in self.summary:

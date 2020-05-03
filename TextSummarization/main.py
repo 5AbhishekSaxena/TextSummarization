@@ -104,7 +104,9 @@ with open('dataset/test_data.csv') as csv_file:
                 featureDictionaries[DictionaryType.HAS_NUMBER_FEATURE] = hasNumberFeature
                 featureDictionaries[DictionaryType.RELEVANCE_TO_TITLE_FEATURE] = relevanceToTitleFeature
 
-                ExportToExcel(article_count, featureDictionaries)
+                exportToExcel = ExportToExcel(article_count, featureDictionaries)
+                exportToExcel.saveData()
+                exportToExcel.csvFromExcel()
 
                 if numberOfSentences < 10:
                     print(f'Sentences: {baseNewsArticle.getArticle()}')
@@ -130,7 +132,7 @@ with open('dataset/test_data.csv') as csv_file:
                       f'\nGiven Summary:{lengthOfGivenSummary}'
                     )
 
-                print(f'Sentiment: {SentimentAnalysis(generated_summary).detemineSentiment()}')
+                print(f'Sentiment: {SentimentAnalysis(generated_summary).determineSentiment()}')
 
                 print("=====" * 50 + '\n')
 

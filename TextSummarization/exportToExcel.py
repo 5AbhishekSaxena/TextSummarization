@@ -1,13 +1,21 @@
+import csv
+
+import xlrd
 import xlwt
 from xlwt import Workbook
+from xlwt.compat import xrange
+
 from TextSummarization.Constants import DictionaryType
 
 
 class ExportToExcel:
     def __init__(self, article_count, featureDictionary):
-        wb = Workbook()
+
+        self.article_count = article_count
+        self.featureDictionary = featureDictionary
+        self.wb = Workbook()
         # Set 1st Row
-        self.sheet = wb.add_sheet('Sheet 1')
+        self.sheet = self.wb.add_sheet('Sheet 1')
         self.sheet.write(0, 0, 'Sentences')
         self.sheet.write(0, 1, 'Noun Feature')
         self.sheet.write(0, 2, 'Sentence Length Feature')
@@ -15,10 +23,12 @@ class ExportToExcel:
         self.sheet.write(0, 4, 'Relevance to title Feature')
         self.sheet.write(0, 5, 'Sentence Usefulness')
 
-        nounFeatureScoring = dict(featureDictionary[DictionaryType.NOUN_FEATURE])
-        sentenceLengthFeature = dict(featureDictionary[DictionaryType.SENTENCE_LENGTH_FEATURE])
-        hasNumberFeature = dict(featureDictionary[DictionaryType.HAS_NUMBER_FEATURE])
-        relevanceToTitleFeature = dict(featureDictionary[DictionaryType.RELEVANCE_TO_TITLE_FEATURE])
+    def saveData(self):
+        nounFeatureScoring = dict(self.featureDictionary[DictionaryType.NOUN_FEATURE])
+        sentenceLengthFeature = dict(self.featureDictionary[DictionaryType.SENTENCE_LENGTH_FEATURE])
+        hasNumberFeature = dict(self.featureDictionary[DictionaryType.HAS_NUMBER_FEATURE])
+        relevanceToTitleFeature =\
+            dict(self.featureDictionary[DictionaryType.RELEVANCE_TO_TITLE_FEATURE])
         row_count = 1
         nounColumn = 1
         sentenceLength_column = 2
@@ -32,4 +42,15 @@ class ExportToExcel:
             self.sheet.write(row_count, relevanceToTitleColumn, relevanceToTitleFeature[i])
             row_count = row_count + 1
 
-        wb.save(f'dataset/manual-dataset/article - {article_count}.xlsx')
+        self.wb.save(f'dataset/manual-dataset/article - {self.article_count}.xlsx')
+
+    def csvFromExcel(self):
+        wb = xlrd.open_workbook(f'dataset/manual-dataset/article - {self.article_count}.xlsx')
+        sh = wb.sheet_by_index(0)
+        csv_file = open(f'dataset/manual-dataset/csv-files/csv file - {self.article_count}.csv', 'w')
+        wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+
+        for rownum in xrange(sh.nrows):
+            wr.writerow(sh.row_values(rownum))
+
+        csv_file.close()
