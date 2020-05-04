@@ -1,5 +1,6 @@
 negative_words_file = open("dataset/negative_words_hi.txt", "r")
 positive_word_file = open("dataset/positive_words_hi.txt", "r")
+
 negative_words = set()
 positive_words = set()
 

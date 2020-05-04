@@ -101,17 +101,29 @@ class ProcessSentences:
             self.sentences = self.getTokenizedSentences()
 
         sentenceNounScore = {}
+        sentenceNounScore1 = {}
         for sentence in self.sentences:
-            textBlob = TextBlob(sentence)
+            textBlobHindiSentence = TextBlob(sentence)
+            textBlobEnglishSentence = textBlobHindiSentence.translate()
             sentenceNounScore[sentence] = 0
 
-            for words, tag in textBlob.tags:
-                # print(words, tag, end=", ", sep=": ")
+            for words, tag in tuple(textBlobHindiSentence.tags):
+                print(words, tag, end=", ", sep=": ")
 
-                if "NN" in tag:
+                if "NNP" == tag:
                     sentenceNounScore[sentence] = int(sentenceNounScore[sentence]) + 1
 
-        return sentenceNounScore
+            print("\n\nEnglish Pos-tagging data  print======")
+            for words, tag in tuple(textBlobEnglishSentence.tags):
+                print(words, tag, end=", ", sep=": ")
+
+                if "NNP" == tag:
+                    sentenceNounScore1[sentence] = int(sentenceNounScore1[sentence]) + 1
+
+            print(sentenceNounScore)
+            print(textBlobEnglishSentence)
+
+        return sentenceNounScore1
 
     # 6 Unique Term Frequency
     def calculateTermUniqueness(self):
@@ -119,11 +131,7 @@ class ProcessSentences:
         wordCounter = Counter(self.newsArticle.getTextBlob().words)
         return wordCounter
 
-    # 7 Date Feature TODO
-    def checkDate(self):
-        pass
-
-    # 8 Relevance to title
+    # 7 Relevance to title
     def relevanceToTitle(self):
         relevanceToTitleDictionary = dict()
         if len(self.sentences) < 1:
