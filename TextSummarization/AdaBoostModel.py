@@ -10,18 +10,18 @@ import numpy as np
 
 excel_file = "/Users/rajeshwari/Desktop/article.xlsx"
 columns = ['Sentence ID', 'Noun Feature', 'Sentence Length Feature', 'Number Feature', 'Relevance to title Feature', 'Sentence Usefulness']
-df = pd.read_excel(excel_file, columns=columns)
-original_headers = list(df.columns.values)
+custom_dataset = pd.read_excel(excel_file, columns=columns)
+original_headers = list(custom_dataset.columns.values)
 #print(original_headers)
 
 # remove the non-numeric columns
-df = df._get_numeric_data()
+custom_dataset = custom_dataset._get_numeric_data()
 
 # put the numeric column names in a python list
-numeric_headers = list(df.columns.values)
+numeric_headers = list(custom_dataset.columns.values)
 
 # create a numpy array with the numeric values for input into scikit-learn
-feature_list = np.array(df)
+feature_list = np.array(custom_dataset)
 
 #print(feature_list)
 
@@ -37,5 +37,14 @@ model = abc.fit(X_train, y_train)
 #Predict the response for test dataset
 y_pred = model.predict(X_test)
 
+print("Accuracy for the model: ", metrics.accuracy_score(y_test, y_pred))
+print("Precision score: ", metrics.precision_score(y_test, y_pred))
+print("Recall score: ", metrics.recall_score(y_test, y_pred))
 
-print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+summarized_sentence = ""
+
+for i in y_pred:
+    if (y_pred[i] == 1):
+        summarized_sentence += X_test[i]
+
+print(summarized_sentence)
