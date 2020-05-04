@@ -113,6 +113,8 @@ class ProcessSentences:
                 if "NNP" == tag:
                     sentenceNounScore[sentence] = int(sentenceNounScore[sentence]) + 1
 
+            #todo : textblob limit, save data offline
+
             # print("\n\nEnglish Pos-tagging data  print======")
             # for words, tag in tuple(textBlobEnglishSentence.tags):
             #     # print(words, tag, end=", ", sep=": ")
@@ -178,14 +180,19 @@ class ProcessSentences:
     def getAggregateIDF(self, idfDictionary):
         wordList = processStopwords(self.newsArticle)
         inverseDocumentFrequencyDictionary = dict(idfDictionary)
+        print(f'\n\n idf dict: {inverseDocumentFrequencyDictionary}')
         sumIDFDictionary = {}
 
         for word in wordList:
             for sentence in self.sentences:
-                sumIDFDictionary[sentence] = 0
+                # print(sentence)
+
+                if sentence not in sumIDFDictionary:
+                    sumIDFDictionary[sentence] = 0
+
                 if word in sentence:
                     # print(f'\nword: {word}, sentence:{sentence}\n')
-                    if word in inverseDocumentFrequencyDictionary.keys():
+                    if word in inverseDocumentFrequencyDictionary:
                         sumIDFDictionary[sentence] = sumIDFDictionary[sentence] + inverseDocumentFrequencyDictionary[word]
 
         # print(f'\n\nInverseDocFrequency for each sentence: \n{sumIDFDictionary}')
@@ -198,7 +205,10 @@ class ProcessSentences:
 
         for word in wordList:
             for sentence in self.sentences:
-                sumTFDictionary[sentence] = 0
+
+                if sentence not in sumTFDictionary:
+                    sumTFDictionary[sentence] = 0
+
                 if word in sentence:
                     # print(f'\nword: {word}, sentence:{sentence}\n')
                     if word in termFrequencyDictionary.keys():

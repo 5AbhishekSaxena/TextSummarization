@@ -63,11 +63,13 @@ with open('dataset/test_data.csv') as csv_file:
                 # numberOfSentences = len(processSentences.getTokenizedSentences()) fixme: uncomment later
                 print(f'Time-total number of sentences: {time.process_time() - e1}')
                 e1 = time.process_time()
-                termFrequency = getDictionaryAsString(processArticle.calculateTermFrequency(),
+                termFrequencyDictionary = processArticle.calculateTermFrequency()
+                termFrequency = getDictionaryAsString(termFrequencyDictionary,
                                                       Type.TERM_FREQUENCY)
                 print(f'Time-term frequency: {time.process_time() - e1}')
                 e1 = time.process_time()
-                inverseDocumentFrequency = getDictionaryAsString(processArticle.calculateInverseDocumentFrequency(),
+                inverseDocumentFrequencyDictionary = processArticle.calculateInverseDocumentFrequency()
+                inverseDocumentFrequency = getDictionaryAsString(inverseDocumentFrequencyDictionary,
                                                                  Type.INVERSE_DOCUMENT_FREQUENCY)
                 print(f'Time-idf: {time.process_time() - e1}')
                 e1 = time.process_time()
@@ -89,8 +91,8 @@ with open('dataset/test_data.csv') as csv_file:
                 hasNumberFeature = processArticle.hasNumbers()
                 relevanceToTitleFeature = processArticle.relevanceToTitle()
 
-                aggregateIDF = processArticle.getAggregateIDF(inverseDocumentFrequency)
-                aggregateTF = processArticle.getAggregateTF(termFrequency)
+                aggregateIDF = processArticle.getAggregateIDF(inverseDocumentFrequencyDictionary)
+                aggregateTF = processArticle.getAggregateTF(termFrequencyDictionary)
 
                 print(f' Total number of wortds in article: {numberOfWordsInArticle}'
                       f'\nNumber of imp words: {numberOfImpWords}')
@@ -106,6 +108,8 @@ with open('dataset/test_data.csv') as csv_file:
                 featureDictionaries[DictionaryType.SENTENCE_LENGTH_FEATURE] = sentenceLengthFeature
                 featureDictionaries[DictionaryType.HAS_NUMBER_FEATURE] = hasNumberFeature
                 featureDictionaries[DictionaryType.RELEVANCE_TO_TITLE_FEATURE] = relevanceToTitleFeature
+                featureDictionaries[DictionaryType.AGGREGATE_IDF] = aggregateIDF
+                featureDictionaries[DictionaryType.AGGREGATE_TF] = aggregateTF
 
                 exportToExcel = ExportToExcel(article_count, featureDictionaries)
                 exportToExcel.saveData()

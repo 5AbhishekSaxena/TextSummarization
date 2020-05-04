@@ -16,12 +16,12 @@ class ExportToExcel:
         self.wb = Workbook()
         # Set 1st Row
         self.sheet = self.wb.add_sheet('Sheet 1')
-        self.sheet.write(0, 0, 'Sentences')
-        self.sheet.write(0, 1, 'Noun Feature')
-        self.sheet.write(0, 2, 'Sentence Length Feature')
-        self.sheet.write(0, 3, 'Number Feature')
-        self.sheet.write(0, 4, 'Relevance to title Feature')
-        self.sheet.write(0, 5, 'Sentence Usefulness')
+        # self.sheet.write(0, 0, 'Sentences')
+        # self.sheet.write(0, 1, 'Noun Feature')
+        # self.sheet.write(0, 2, 'Sentence Length Feature')
+        # self.sheet.write(0, 3, 'Number Feature')
+        # self.sheet.write(0, 4, 'Relevance to title Feature')
+        # self.sheet.write(0, 5, 'Sentence Usefulness')
 
     def saveData(self):
         nounFeatureScoring = dict(self.featureDictionary[DictionaryType.NOUN_FEATURE])
@@ -29,17 +29,24 @@ class ExportToExcel:
         hasNumberFeature = dict(self.featureDictionary[DictionaryType.HAS_NUMBER_FEATURE])
         relevanceToTitleFeature =\
             dict(self.featureDictionary[DictionaryType.RELEVANCE_TO_TITLE_FEATURE])
-        row_count = 1
+        aggregateIDFDictionary = dict(self.featureDictionary[DictionaryType.AGGREGATE_IDF])
+        aggregateTFDictionary = dict(self.featureDictionary[DictionaryType.AGGREGATE_TF])
+
+        row_count = 0
         nounColumn = 1
         sentenceLength_column = 2
         hasNumberColumn = 3
         relevanceToTitleColumn = 4
+        aggregateIDFColumn = 5
+        aggregateTFColumn = 6
         for i in nounFeatureScoring.keys():
             self.sheet.write(row_count, 0, i)
             self.sheet.write(row_count, nounColumn, nounFeatureScoring[i])
             self.sheet.write(row_count, sentenceLength_column, sentenceLengthFeature[i])
             self.sheet.write(row_count, hasNumberColumn, hasNumberFeature[i])
             self.sheet.write(row_count, relevanceToTitleColumn, relevanceToTitleFeature[i])
+            self.sheet.write(row_count, aggregateIDFColumn, aggregateIDFDictionary[i])
+            self.sheet.write(row_count, aggregateTFColumn, aggregateTFDictionary[i])
             row_count = row_count + 1
 
         self.wb.save(f'dataset/manual-dataset/article - {self.article_count}.xlsx')
