@@ -10,3 +10,5 @@ class DictionaryType:
     SENTENCE_LENGTH_FEATURE = 'sentence_length_feature'
     HAS_NUMBER_FEATURE = 'has_number_feature'
     RELEVANCE_TO_TITLE_FEATURE = 'relevance_to_title_feature'
+    AGGREGATE_IDF = 'aggregate_idf'
+    AGGREGATE_TF = 'aggregate_tf'

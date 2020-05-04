@@ -24,7 +24,7 @@ with open('dataset/test_data.csv') as csv_file:
         if article_count == 0:
             print(f'Column names are {", ".join(row)}')
             article_count += 1
-        elif len(row[1].strip()) > 5 and "VIDEO" not in row[2] and TextBlob(row[2][:10]).detect_language() == 'hi':
+        elif len(row[1].strip()) > 5 and "VIDEO" not in row[2] :#and TextBlob(row[2][:10]).detect_language() == 'hi':
 
             heading, given_summary, article = row[0], row[1], row[2]
             try:
@@ -58,16 +58,18 @@ with open('dataset/test_data.csv') as csv_file:
                 print(f'Time-total number of imp words: {time.process_time() - e1}')
                 e1 = time.process_time()
 
-                processArticle.generate_summary()
+                # processArticle.generate_summary()
                 generated_summary = convertListToString(temp)
                 # numberOfSentences = len(processSentences.getTokenizedSentences()) fixme: uncomment later
                 print(f'Time-total number of sentences: {time.process_time() - e1}')
                 e1 = time.process_time()
-                termFrequency = getDictionaryAsString(processArticle.calculateTermFrequency(),
+                termFrequencyDictionary = processArticle.calculateTermFrequency()
+                termFrequency = getDictionaryAsString(termFrequencyDictionary,
                                                       Type.TERM_FREQUENCY)
                 print(f'Time-term frequency: {time.process_time() - e1}')
                 e1 = time.process_time()
-                inverseDocumentFrequency = getDictionaryAsString(processArticle.calculateInverseDocumentFrequency(),
+                inverseDocumentFrequencyDictionary = processArticle.calculateInverseDocumentFrequency()
+                inverseDocumentFrequency = getDictionaryAsString(inverseDocumentFrequencyDictionary,
                                                                  Type.INVERSE_DOCUMENT_FREQUENCY)
                 print(f'Time-idf: {time.process_time() - e1}')
                 e1 = time.process_time()
@@ -89,6 +91,9 @@ with open('dataset/test_data.csv') as csv_file:
                 hasNumberFeature = processArticle.hasNumbers()
                 relevanceToTitleFeature = processArticle.relevanceToTitle()
 
+                aggregateIDF = processArticle.getAggregateIDF(inverseDocumentFrequencyDictionary)
+                aggregateTF = processArticle.getAggregateTF(termFrequencyDictionary)
+
                 print(f' Total number of wortds in article: {numberOfWordsInArticle}'
                       f'\nNumber of imp words: {numberOfImpWords}')
                 # try:
@@ -103,6 +108,8 @@ with open('dataset/test_data.csv') as csv_file:
                 featureDictionaries[DictionaryType.SENTENCE_LENGTH_FEATURE] = sentenceLengthFeature
                 featureDictionaries[DictionaryType.HAS_NUMBER_FEATURE] = hasNumberFeature
                 featureDictionaries[DictionaryType.RELEVANCE_TO_TITLE_FEATURE] = relevanceToTitleFeature
+                featureDictionaries[DictionaryType.AGGREGATE_IDF] = aggregateIDF
+                featureDictionaries[DictionaryType.AGGREGATE_TF] = aggregateTF
 
                 exportToExcel = ExportToExcel(article_count, featureDictionaries)
                 exportToExcel.saveData()

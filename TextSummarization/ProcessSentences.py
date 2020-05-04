@@ -56,7 +56,6 @@ class ProcessSentences:
 
         return termFrequencyDictionary
 
-
     # 2 TODO
     def setenceSimilarity(self):
         pass
@@ -101,15 +100,30 @@ class ProcessSentences:
             self.sentences = self.getTokenizedSentences()
 
         sentenceNounScore = {}
+        sentenceNounScore1 = {}
         for sentence in self.sentences:
-            textBlob = TextBlob(sentence)
+            textBlobHindiSentence = TextBlob(sentence)
+            # textBlobEnglishSentence = textBlobHindiSentence.translate()
             sentenceNounScore[sentence] = 0
+            sentenceNounScore1[sentence] = 0
 
-            for words, tag in textBlob.tags:
-                # print(words, tag, end=", ", sep=": ")
+            for words, tag in tuple(textBlobHindiSentence.tags):
+                print(words, tag, end=", ", sep=": ")
 
-                if "NN" in tag:
+                if "NNP" == tag:
                     sentenceNounScore[sentence] = int(sentenceNounScore[sentence]) + 1
+
+            #todo : textblob limit, save data offline
+
+            # print("\n\nEnglish Pos-tagging data  print======")
+            # for words, tag in tuple(textBlobEnglishSentence.tags):
+            #     # print(words, tag, end=", ", sep=": ")
+            #
+            #     if "NNP" == tag:
+            #         sentenceNounScore1[sentence] = int(sentenceNounScore1[sentence]) + 1
+
+            # print(sentenceNounScore)
+            # print(textBlobEnglishSentence)
 
         return sentenceNounScore
 
@@ -119,11 +133,7 @@ class ProcessSentences:
         wordCounter = Counter(self.newsArticle.getTextBlob().words)
         return wordCounter
 
-    # 7 Date Feature TODO
-    def checkDate(self):
-        pass
-
-    # 8 Relevance to title
+    # 7 Relevance to title
     def relevanceToTitle(self):
         relevanceToTitleDictionary = dict()
         if len(self.sentences) < 1:
@@ -167,57 +177,97 @@ class ProcessSentences:
 
         return inverseDocumentFrequencyDictionary
 
-    def scoreSentences(self) -> dict:
-        freqTable = Counter(processStopwords(self.newsArticle))
+    def getAggregateIDF(self, idfDictionary):
+        wordList = processStopwords(self.newsArticle)
+        inverseDocumentFrequencyDictionary = dict(idfDictionary)
+        print(f'\n\n idf dict: {inverseDocumentFrequencyDictionary}')
+        sumIDFDictionary = {}
 
-        if len(self.sentences) < 1:
-            self.sentences = self.getTokenizedSentences()
-        sentenceValue = dict()
+        for word in wordList:
+            for sentence in self.sentences:
+                # print(sentence)
 
-        for sentence in self.sentences:
-            textBlob = TextBlob(sentence)
-            word_count_in_sentence = len(textBlob.words)  # (len(word_tokenize(sentence)))
-            # print(f'word count in sentence: {word_count_in_sentence}')
-            value = round(random.uniform(1, 2), 2)
-            for wordValue in freqTable:
-                if wordValue in sentence.lower():
-                    if sentence[:10] in sentenceValue:
-                        sentenceValue[sentence[:10]] += freqTable[wordValue]
-                    else:
-                        sentenceValue[sentence[:10]] = freqTable[wordValue]
+                if sentence not in sumIDFDictionary:
+                    sumIDFDictionary[sentence] = 0
 
-            sentenceValue[sentence[:10]] = (sentenceValue[sentence[:10]] // word_count_in_sentence) + value
-        return sentenceValue
+                if word in sentence:
+                    # print(f'\nword: {word}, sentence:{sentence}\n')
+                    if word in inverseDocumentFrequencyDictionary:
+                        sumIDFDictionary[sentence] = sumIDFDictionary[sentence] + inverseDocumentFrequencyDictionary[word]
 
-    def findAverageScore(self):
-        sentenceValue = self.scoreSentences()
-        # print(f'ScoreSentences: {sentenceValue}')
-        sumValues = 0
-        for entry in sentenceValue:
-            sumValues += sentenceValue[entry]
-        # Average value of a sentence from original text
-        average = sumValues / len(sentenceValue)
+        # print(f'\n\nInverseDocFrequency for each sentence: \n{sumIDFDictionary}')
+        return sumIDFDictionary
 
-        return average
+    def getAggregateTF(self, tfDictionary):
+        wordList = processStopwords(self.newsArticle)
+        termFrequencyDictionary = dict(tfDictionary)
+        sumTFDictionary = {}
 
-    def generate_summary(self, value=1.5) -> str:
-        if len(self.sentences) < 1:
-            self.sentences = self.getTokenizedSentences()
-        # print(f'Sentences: {sentences}')
-        sentenceValue = self.scoreSentences()
-        threshold = self.findAverageScore() * value  # value = 1.5(default), 1.3 and 1.8
-        # print(f'SentenceValue: {sentenceValue}')
-        # print(f'Threshold: {threshold}')
-        # print(f'Average: {self.findAverageScore()}')
-        sentence_count = 0
-        summary = ''
+        for word in wordList:
+            for sentence in self.sentences:
 
-        for sentence in self.sentences:
-            if sentence[:10] in sentenceValue and sentenceValue[sentence[:10]] > threshold:
-                summary += " " + sentence
-                sentence_count += 1
+                if sentence not in sumTFDictionary:
+                    sumTFDictionary[sentence] = 0
 
-        return summary
+                if word in sentence:
+                    # print(f'\nword: {word}, sentence:{sentence}\n')
+                    if word in termFrequencyDictionary.keys():
+                        sumTFDictionary[sentence] = sumTFDictionary[sentence] + termFrequencyDictionary[word]
+
+        # print(f'\n\nInverseDocFrequency for each sentence: \n{sumTFDictionary}')
+        return sumTFDictionary
+
+    # def scoreSentences(self) -> dict:
+    #     freqTable = Counter(processStopwords(self.newsArticle))
+    #
+    #     if len(self.sentences) < 1:
+    #         self.sentences = self.getTokenizedSentences()
+    #     sentenceValue = dict()
+    #
+    #     for sentence in self.sentences:
+    #         textBlob = TextBlob(sentence)
+    #         word_count_in_sentence = len(textBlob.words)  # (len(word_tokenize(sentence)))
+    #         # print(f'word count in sentence: {word_count_in_sentence}')
+    #         value = round(random.uniform(1, 2), 2)
+    #         for wordValue in freqTable:
+    #             if wordValue in sentence.lower():
+    #                 if sentence[:10] in sentenceValue:
+    #                     sentenceValue[sentence[:10]] += freqTable[wordValue]
+    #                 else:
+    #                     sentenceValue[sentence[:10]] = freqTable[wordValue]
+    #
+    #         sentenceValue[sentence[:10]] = (sentenceValue[sentence[:10]] // word_count_in_sentence) + value
+    #     return sentenceValue
+
+    # def findAverageScore(self):
+    #     sentenceValue = self.scoreSentences()
+    #     # print(f'ScoreSentences: {sentenceValue}')
+    #     sumValues = 0
+    #     for entry in sentenceValue:
+    #         sumValues += sentenceValue[entry]
+    #     # Average value of a sentence from original text
+    #     average = sumValues / len(sentenceValue)
+    #
+    #     return average
+
+    # def generate_summary(self, value=1.5) -> str:
+    #     if len(self.sentences) < 1:
+    #         self.sentences = self.getTokenizedSentences()
+    #     # print(f'Sentences: {sentences}')
+    #     sentenceValue = self.scoreSentences()
+    #     threshold = self.findAverageScore() * value  # value = 1.5(default), 1.3 and 1.8
+    #     # print(f'SentenceValue: {sentenceValue}')
+    #     # print(f'Threshold: {threshold}')
+    #     # print(f'Average: {self.findAverageScore()}')
+    #     sentence_count = 0
+    #     summary = ''
+    #
+    #     for sentence in self.sentences:
+    #         if sentence[:10] in sentenceValue and sentenceValue[sentence[:10]] > threshold:
+    #             summary += " " + sentence
+    #             sentence_count += 1
+    #
+    #     return summary
 
 #
 # hindi_text = """देखने गए लोगों का फ़िल्म देखने के बाद इस कहावत से राब्ता हो सकता है. बाहुबली
