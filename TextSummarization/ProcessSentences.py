@@ -87,12 +87,10 @@ class ProcessSentences:
 
         for sentence in self.sentences:
             number_of_words = countNumberOfWords(sentence)
-            if number_of_words < 3:
+            if number_of_words < 7:
                 sentenceLengthDictionary[sentence] = 0.0
-            elif number_of_words < 6:
-                sentenceLengthDictionary[sentence] = number_of_words/10
             else:
-                sentenceLengthDictionary[sentence] = 1
+                sentenceLengthDictionary[sentence] = number_of_words/10
 
         return sentenceLengthDictionary
 
