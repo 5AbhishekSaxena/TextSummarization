@@ -24,7 +24,7 @@ with open('dataset/test_data.csv') as csv_file:
         if article_count == 0:
             print(f'Column names are {", ".join(row)}')
             article_count += 1
-        elif len(row[1].strip()) > 5 and "VIDEO" not in row[2] and TextBlob(row[2][:10]).detect_language() == 'hi':
+        elif len(row[1].strip()) > 5 and "VIDEO" not in row[2] :#and TextBlob(row[2][:10]).detect_language() == 'hi':
 
             heading, given_summary, article = row[0], row[1], row[2]
             try:
@@ -58,7 +58,7 @@ with open('dataset/test_data.csv') as csv_file:
                 print(f'Time-total number of imp words: {time.process_time() - e1}')
                 e1 = time.process_time()
 
-                processArticle.generate_summary()
+                # processArticle.generate_summary()
                 generated_summary = convertListToString(temp)
                 # numberOfSentences = len(processSentences.getTokenizedSentences()) fixme: uncomment later
                 print(f'Time-total number of sentences: {time.process_time() - e1}')
@@ -88,6 +88,9 @@ with open('dataset/test_data.csv') as csv_file:
                 sentenceLengthFeature = processArticle.sentenceLengthFeature()
                 hasNumberFeature = processArticle.hasNumbers()
                 relevanceToTitleFeature = processArticle.relevanceToTitle()
+
+                aggregateIDF = processArticle.getAggregateIDF(inverseDocumentFrequency)
+                aggregateTF = processArticle.getAggregateTF(termFrequency)
 
                 print(f' Total number of wortds in article: {numberOfWordsInArticle}'
                       f'\nNumber of imp words: {numberOfImpWords}')
