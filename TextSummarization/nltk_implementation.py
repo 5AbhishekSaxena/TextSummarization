@@ -15,7 +15,7 @@ def getHindiCorpus():
 
 
 def word_tokenize(text):
-    print("Word Tokenizer triggered")
+    #print("Word Tokenizer triggered")
     word_tokenizer = WordTokenizer('sanskrit')
     # print("word tokenize: ", word_tokenizer.tokenize(self.sentence))
     return word_tokenizer.tokenize(text)
@@ -24,7 +24,7 @@ def word_tokenize(text):
 def sentence_tokenizer(text):
     text.replace(".", " | ")
     text.replace("\n", "").strip()
-    print("Sentence Tokenizer triggered")
+    #print("Sentence Tokenizer triggered")
     hindi_text_sentence_tokenize = TokenizeSentence('hindi').tokenize(text)
     return hindi_text_sentence_tokenize
     # print(f'hindi text sentence tokenize {hindi_text_sentence_tokenize}')

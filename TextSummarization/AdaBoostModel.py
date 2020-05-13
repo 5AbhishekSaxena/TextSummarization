@@ -34,7 +34,11 @@ def classifier_builder(excel_file):
 
     adamodel = abc.fit(X_train, y_train)
 
+    y_pred = adamodel.predict(X_test)
+
     average_precision = metrics.average_precision_score(y_test, y_pred)
+
+
 
     print("Accuracy for the model: ", metrics.accuracy_score(y_test, y_pred))
     print("Precision score: ", metrics.precision_score(y_test, y_pred))
@@ -56,8 +60,6 @@ def generate_summary(test_excel_file):
 
     model = classifier_builder(train_excel_file)
 
-    test_excel_file = "file.xlsx"
-
     columns = ['Sentence ID', 'Noun Feature', 'Sentence Length Feature', 'Number Feature', 'Relevance to title Feature',
                'Inverse Document Term Frequency Feature', 'Term Frequency Feature']
     custom_dataset = pd.read_excel(test_excel_file, names=columns)
@@ -75,8 +77,7 @@ def generate_summary(test_excel_file):
 
     # print(feature_list)
 
-    X_test = feature_list[:, [0, 1, 2, 3, 4, 5]]
-    y_test = feature_list[:, 6]
+    X_test = feature_list[:, [0, 1, 2, 3, 4, 5, 6]]
 
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
@@ -86,6 +87,11 @@ def generate_summary(test_excel_file):
 
     # Predict the response for test dataset
     y_pred = model.predict(X_test)
+
+    print(y_pred.tolist())
+
+    return y_pred
+
 
 
 

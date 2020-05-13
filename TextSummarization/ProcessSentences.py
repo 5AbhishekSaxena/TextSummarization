@@ -108,7 +108,7 @@ class ProcessSentences:
             sentenceNounScore1[sentence] = 0
 
             for words, tag in tuple(textBlobHindiSentence.tags):
-                print(words, tag, end=", ", sep=": ")
+                #print(words, tag, end=", ", sep=": ")
 
                 if "NNP" == tag:
                     sentenceNounScore[sentence] = int(sentenceNounScore[sentence]) + 1
@@ -180,7 +180,7 @@ class ProcessSentences:
     def getAggregateIDF(self, idfDictionary):
         wordList = processStopwords(self.newsArticle)
         inverseDocumentFrequencyDictionary = dict(idfDictionary)
-        print(f'\n\n idf dict: {inverseDocumentFrequencyDictionary}')
+        #print(f'\n\n idf dict: {inverseDocumentFrequencyDictionary}')
         sumIDFDictionary = {}
 
         for word in wordList:
