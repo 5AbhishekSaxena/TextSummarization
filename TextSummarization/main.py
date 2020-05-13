@@ -1,19 +1,22 @@
 import csv
 import time
+
+from TextSummarization.AdaBoostModel import generate_summary
 from TextSummarization.ProcessSentences import ProcessSentences
 from TextSummarization.ProcessStopwords import processStopwords
 from TextSummarization.Utils import getDictionaryAsString
 from TextSummarization.Utils import convertListToString
-from TextSummarization.Utils import helper
+# from TextSummarization.Utils import helper
 from TextSummarization.Constants import Type, DictionaryType
 from TextSummarization.BaseNewsArticle import BaseNewsArticle
 from textblob import TextBlob
 from TextSummarization.nltk_implementation import word_tokenize
 from TextSummarization.nltk_implementation import sentence_tokenizer
-from TextSummarization.SentimentAnalysis import SentimentAnalysis
+#from TextSummarization.SentimentAnalysis import SentimentAnalysis
 from TextSummarization.exportToExcel import ExportToExcel
 
-with open('dataset/test_data.csv') as csv_file:
+
+with open('dataset/test_case.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     article_count = 0
     correct = 0
@@ -30,7 +33,7 @@ with open('dataset/test_data.csv') as csv_file:
             try:
                 if "।" in article:
                     article = article.replace("।", ".")  # FIXME for summarization
-                temp = helper(article)
+               # temp = helper(article)
                 # print(f'Summary using library:\n{generated_summary}\n')
             except ValueError as e:
                 continue
@@ -47,7 +50,7 @@ with open('dataset/test_data.csv') as csv_file:
                 print(
                     f'Article #{article_count}\nHeading:\n{heading}  \n\nSummary:\n{given_summary} '
                     f'\n\nArticle:\n{article}\n')
-                print(f'Generated Summary: \n{temp}') #fixme uncomment later
+                #print(f'Generated Summary: \n{temp}') #fixme uncomment later
                 e1 = time.process_time()
                 lengthOfHeading = len(heading.strip().split(" "))
                 numberOfWordsInArticle = baseNewsArticle.getTotalNumberOfWords()
@@ -59,7 +62,7 @@ with open('dataset/test_data.csv') as csv_file:
                 e1 = time.process_time()
 
                 # processArticle.generate_summary()
-                generated_summary = convertListToString(temp)
+                #generated_summary = convertListToString(temp)
                 # numberOfSentences = len(processSentences.getTokenizedSentences()) fixme: uncomment later
                 print(f'Time-total number of sentences: {time.process_time() - e1}')
                 e1 = time.process_time()
@@ -113,6 +116,11 @@ with open('dataset/test_data.csv') as csv_file:
 
                 exportToExcel = ExportToExcel(article_count, featureDictionaries)
                 exportToExcel.saveData()
+
+                #TODO: add a function to call this newly saved article here as shown below. Import from adaboost class is done
+
+                #generate_summary(excel_file_name)
+
                 exportToExcel.csvFromExcel()
 
                 if numberOfSentences < 10:
@@ -139,7 +147,7 @@ with open('dataset/test_data.csv') as csv_file:
                       f'\nGiven Summary:{lengthOfGivenSummary}'
                     )
 
-                print(f'Sentiment: {SentimentAnalysis(generated_summary).determineSentiment()}')
+                #print(f'Sentiment: {SentimentAnalysis(generated_summary).determineSentiment()}')
 
                 print("=====" * 50 + '\n')
 

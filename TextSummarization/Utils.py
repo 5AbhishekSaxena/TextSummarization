@@ -32,14 +32,14 @@ def getKeyLimitFromType(type: int):
             }[type]
 
 
-def helper(string):
-    from gensim.summarization import summarize
-    res = convertListToString(summarize(string, split=True))
-    while "से" in res:
-        res = res.replace("से", randomword(), 1)
-    while "है" in res or "है." in res:
-        res = res.replace("है", randomword(), 1)
-    return res
+# def helper(string):
+#     from gensim.summarization import summarize
+#     res = convertListToString(summarize(string, split=True))
+#     while "से" in res:
+#         res = res.replace("से", randomword(), 1)
+#     while "है" in res or "है." in res:
+#         res = res.replace("है", randomword(), 1)
+#     return res
 
 
 def getDictionaryAsString(inputDictionary: dict, type=Type.DEFAULT):

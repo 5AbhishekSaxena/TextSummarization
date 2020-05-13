@@ -39,8 +39,9 @@ class ExportToExcel:
         relevanceToTitleColumn = 4
         aggregateIDFColumn = 5
         aggregateTFColumn = 6
+
         for i in nounFeatureScoring.keys():
-            self.sheet.write(row_count, 0, i)
+            self.sheet.write(row_count, 0, row_count)
             self.sheet.write(row_count, nounColumn, nounFeatureScoring[i])
             self.sheet.write(row_count, sentenceLength_column, sentenceLengthFeature[i])
             self.sheet.write(row_count, hasNumberColumn, hasNumberFeature[i])
