@@ -10,6 +10,7 @@ class BaseNewsArticle:
         self.heading = heading
         self.article = article  # .replace("[^a-zA-Z]", " ")
         self.summary = summary
+        self.englishTextBlob = TextBlob(article).translate()
 
     def getHeading(self):
         return str(self.heading)
@@ -19,6 +20,9 @@ class BaseNewsArticle:
 
     def getSummary(self):
         return str(self.summary)
+
+    def getEnglishArticle(self):
+        return str(self.englishTextBlob)
 
     def getTextBlob(self, type=ARTICLE) -> TextBlob:
         return {self.HEADING: TextBlob(self.getHeading()),

@@ -10,18 +10,23 @@ from TextSummarization.Utils import similar
 
 
 class ProcessSentences:
-
     sentences = []
+    HINDI = 0
+    ENGLISH = 1
 
     def __init__(self, newsArticle: BaseNewsArticle):
         self.newsArticle = newsArticle
         self.sentences = self.getTokenizedSentences()
 
-    def getTokenizedSentences(self):
+    def getTokenizedSentences(self, type=HINDI):
         if self.newsArticle.article == "":
             return
 
-        textBlob = self.newsArticle.getTextBlob()
+        if type == self.ENGLISH:
+            textBlob = self.newsArticle.englishTextBlob
+        else:
+            textBlob = self.newsArticle.getTextBlob()
+
         # print(f"\nTotal Number of words in article: {len(list(textBlob.words))}\n")
         sentences = list()
         for sentence in textBlob.sentences:
@@ -37,7 +42,7 @@ class ProcessSentences:
 
         termCounterDictionary = dict()
         termFrequencyDictionary = dict()
-        if len(self.sentences) <1:
+        if len(self.sentences) < 1:
             self.sentences = self.getTokenizedSentences()
 
         docWordList = processStopwords(self.newsArticle)
@@ -89,7 +94,7 @@ class ProcessSentences:
             if number_of_words < 7:
                 sentenceLengthDictionary[sentence] = 0.0
             else:
-                sentenceLengthDictionary[sentence] = number_of_words/10
+                sentenceLengthDictionary[sentence] = number_of_words / 10
 
         return sentenceLengthDictionary
 
@@ -101,26 +106,27 @@ class ProcessSentences:
 
         sentenceNounScore = {}
         sentenceNounScore1 = {}
-        for sentence in self.sentences:
+        englishSentences = self.getTokenizedSentences(type=self.ENGLISH)
+        for sentence in englishSentences:
             textBlobHindiSentence = TextBlob(sentence)
-            textBlobEnglishSentence = textBlobHindiSentence.translate()
+            textBlobEnglishSentence = TextBlob(sentence)
             sentenceNounScore[sentence] = 0
             sentenceNounScore1[sentence] = 0
 
             for words, tag in tuple(textBlobHindiSentence.tags):
-                #print(words, tag, end=", ", sep=": ")
+                # print(words, tag, end=", ", sep=": ")
 
                 if "NNP" == tag:
                     sentenceNounScore[sentence] = int(sentenceNounScore[sentence]) + 1
 
-            #todo : textblob limit, save data offline
+            # todo : textblob limit, save data offline
 
             # print("\n\nEnglish Pos-tagging data  print======")
             for words, tag in tuple(textBlobEnglishSentence.tags):
-            #     # print(words, tag, end=", ", sep=": ")
-            #
-                 if "NNP" == tag:
-                     sentenceNounScore1[sentence] = int(sentenceNounScore1[sentence]) + 1
+                #     # print(words, tag, end=", ", sep=": ")
+                #
+                if "NNP" == tag:
+                    sentenceNounScore1[sentence] = int(sentenceNounScore1[sentence]) + 1
 
             # print(sentenceNounScore)
             # print(textBlobEnglishSentence)
@@ -148,6 +154,7 @@ class ProcessSentences:
     IDF: 
     (Total number of sentences (documents)) / (Number of sentences (documents) containing the word)
     """
+
     def calculateInverseDocumentFrequency(self):
         wordInSentenceDictionary = {}
         inverseDocumentFrequencyDictionary = {}
@@ -180,7 +187,7 @@ class ProcessSentences:
     def getAggregateIDF(self, idfDictionary):
         wordList = processStopwords(self.newsArticle)
         inverseDocumentFrequencyDictionary = dict(idfDictionary)
-        #print(f'\n\n idf dict: {inverseDocumentFrequencyDictionary}')
+        # print(f'\n\n idf dict: {inverseDocumentFrequencyDictionary}')
         sumIDFDictionary = {}
 
         for word in wordList:
@@ -193,7 +200,8 @@ class ProcessSentences:
                 if word in sentence:
                     # print(f'\nword: {word}, sentence:{sentence}\n')
                     if word in inverseDocumentFrequencyDictionary:
-                        sumIDFDictionary[sentence] = sumIDFDictionary[sentence] + inverseDocumentFrequencyDictionary[word]
+                        sumIDFDictionary[sentence] = sumIDFDictionary[sentence] + \
+                                                     inverseDocumentFrequencyDictionary[word]
 
         # print(f'\n\nInverseDocFrequency for each sentence: \n{sumIDFDictionary}')
         return sumIDFDictionary
@@ -212,7 +220,8 @@ class ProcessSentences:
                 if word in sentence:
                     # print(f'\nword: {word}, sentence:{sentence}\n')
                     if word in termFrequencyDictionary.keys():
-                        sumTFDictionary[sentence] = sumTFDictionary[sentence] + termFrequencyDictionary[word]
+                        sumTFDictionary[sentence] = sumTFDictionary[sentence] + \
+                                                    termFrequencyDictionary[word]
 
         # print(f'\n\nInverseDocFrequency for each sentence: \n{sumTFDictionary}')
         return sumTFDictionary

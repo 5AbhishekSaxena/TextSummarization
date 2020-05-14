@@ -1,11 +1,18 @@
 import nltk
 import ssl
 
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
+# -*- coding: utf-8 -*-
+def isEnglish(s):
+    try:
+        s.encode(encoding='utf-8').decode('ascii')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True
 
-nltk.download()
+print(isEnglish('slabiky, ale liší se podle významu'))
+print(isEnglish('English'))
+print(isEnglish('ގެ ފުރަތަމަ ދެ އަކުރު ކަ'))
+print(isEnglish('how about this one : 通 asfަ'))
+print(isEnglish('?fd4))45s&'))
+print(isEnglish('न्यूनतम मजदूरी का भेदभाव खत्म! जानें मजदूरों की मदद कैसे करेगी सरकार'))

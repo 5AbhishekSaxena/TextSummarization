@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 import pandas as pd
 import numpy as np
-import matplotlib as plt
-import seaborn as sb
+# import matplotlib as plt
+# import seaborn as sb
 
 
 def classifier_builder(excel_file):
