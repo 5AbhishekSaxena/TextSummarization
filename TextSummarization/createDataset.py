@@ -6,13 +6,15 @@ import xlwt
 from xlwt import Workbook
 from xlwt.compat import xrange
 
-from textblob import TextBlob
+from translate import Translator
+
 
 
 class Temp:
-    def __init__(self, baseNewsArticle: BaseNewsArticle, article_number: int):
+    def __init__(self, baseNewsArticle: BaseNewsArticle, article_number: int, englishArticle: str):
         self.baseNewsArticle = baseNewsArticle
         self.article_number = article_number
+        self.englishArticle = englishArticle
 
 
 def isEnglish(s: str) -> bool:
@@ -25,6 +27,7 @@ def isEnglish(s: str) -> bool:
 
 
 articleList = []
+translator = Translator(to_lang='en')
 with open('dataset/test_data.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     article_count = 0
@@ -51,11 +54,17 @@ with open('dataset/test_data.csv') as csv_file:
 
                 baseNewsArticle = BaseNewsArticle(heading=heading, article=article,
                                                   summary=given_summary)
-                temp = Temp(baseNewsArticle, article_count)
+
+                englishTextBlob = baseNewsArticle.getTextBlob().translate()
+
+                print(f'English Translations: {englishTextBlob}')
+
+                print(f'hindi translation: {baseNewsArticle.getArticle()}')
+                temp = Temp(baseNewsArticle, article_count, str(englishTextBlob))
                 articleList.append(temp)
                 article_count += 1
 
-            if article_count == 2:
+            if article_count == 3:
                 break
 
 
@@ -76,10 +85,21 @@ def exportToCsv():
         sheet.write(row_count, articleTitleColumn, i.baseNewsArticle.getHeading())
         sheet.write(row_count, articleSummaryColumn, i.baseNewsArticle.getSummary())
         sheet.write(row_count, articleTextColumn, i.baseNewsArticle.getArticle())
-        sheet.write(row_count, articleEnglishTextColumn, i.baseNewsArticle.getEnglishArticle())
+        sheet.write(row_count, articleEnglishTextColumn, i.englishArticle)
         row_count = row_count + 1
 
     wb.save(f'dataset/manual-dataset/article - temp_dataset.xlsx')
 
 
+def csvFromExcel():
+    wb = xlrd.open_workbook(f'dataset/manual-dataset/article - temp_dataset.xlsx')
+    sh = wb.sheet_by_index(0)
+    csv_file = open(f'dataset/manual-dataset/csv-files/csv file - test_dataset.csv', 'w')
+    wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+
+    for rownum in xrange(sh.nrows):
+        wr.writerow(sh.row_values(rownum))
+
+    csv_file.close()
 exportToCsv()
+csvFromExcel()

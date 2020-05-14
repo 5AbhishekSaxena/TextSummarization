@@ -10,7 +10,6 @@ class BaseNewsArticle:
         self.heading = heading
         self.article = article  # .replace("[^a-zA-Z]", " ")
         self.summary = summary
-        self.englishTextBlob = TextBlob(article).translate()
 
     def getHeading(self):
         return str(self.heading)
