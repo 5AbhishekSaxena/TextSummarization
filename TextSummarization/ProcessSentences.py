@@ -103,7 +103,7 @@ class ProcessSentences:
         sentenceNounScore1 = {}
         for sentence in self.sentences:
             textBlobHindiSentence = TextBlob(sentence)
-            # textBlobEnglishSentence = textBlobHindiSentence.translate()
+            textBlobEnglishSentence = textBlobHindiSentence.translate()
             sentenceNounScore[sentence] = 0
             sentenceNounScore1[sentence] = 0
 
@@ -116,16 +116,16 @@ class ProcessSentences:
             #todo : textblob limit, save data offline
 
             # print("\n\nEnglish Pos-tagging data  print======")
-            # for words, tag in tuple(textBlobEnglishSentence.tags):
+            for words, tag in tuple(textBlobEnglishSentence.tags):
             #     # print(words, tag, end=", ", sep=": ")
             #
-            #     if "NNP" == tag:
-            #         sentenceNounScore1[sentence] = int(sentenceNounScore1[sentence]) + 1
+                 if "NNP" == tag:
+                     sentenceNounScore1[sentence] = int(sentenceNounScore1[sentence]) + 1
 
             # print(sentenceNounScore)
             # print(textBlobEnglishSentence)
 
-        return sentenceNounScore
+        return sentenceNounScore1
 
     # 6 Unique Term Frequency
     def calculateTermUniqueness(self):

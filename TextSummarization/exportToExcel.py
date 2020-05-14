@@ -62,3 +62,17 @@ class ExportToExcel:
             wr.writerow(sh.row_values(rownum))
 
         csv_file.close()
+
+
+    def save_sentences(self, summary):
+        numberOfSentences = len(summary)
+        row_count = 0
+
+        workbook = Workbook()
+        sheet = workbook.add_sheet('Sheet 1')
+
+        for i in summary:
+            sheet.write(row_count, 0, i)
+
+        workbook.save(f'dataset/manual-dataset/summary.xlsx')
+

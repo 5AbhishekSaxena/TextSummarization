@@ -16,7 +16,7 @@ from TextSummarization.nltk_implementation import sentence_tokenizer
 from TextSummarization.exportToExcel import ExportToExcel
 
 
-with open('dataset/test_case.csv') as csv_file:
+with open('dataset/test_case_1.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     article_count = 0
     correct = 0
@@ -47,8 +47,8 @@ with open('dataset/test_case.csv') as csv_file:
                 sentences_in_article = processArticle.getTokenizedSentences()
                 numberOfSentences = len(sentences_in_article)
                 print("Number of sentences in the articles: ", numberOfSentences)
-                if(numberOfSentences > 20):
-                    continue
+                # if(numberOfSentences > 20):
+                #     continue
                 print(
                     f'Article #{article_count}\nHeading:\n{heading}  \n\nSummary:\n{given_summary} '
                     f'\n\nArticle:\n{article}\n')
@@ -155,16 +155,18 @@ with open('dataset/test_case.csv') as csv_file:
 
                 x = 0
 
-                while (x < numberOfSentences - 1):
+                while (x < len(useful_sentences) - 1):
                     if useful_sentences[x] == 1.0:
                         summary = summary + sentences_in_article[x]
                     x += 1
 
                 print("Generated summary is given as follows: \n\n", summary)
 
-                article_count += 1
+                #exportToExcel.save_sentences(summary)
 
-            if article_count == 6:
-                break
+            #     article_count += 1
+            #
+            # if article_count == 6:
+            #     break
 
 #print(f'Processed {article_count} articles.')
