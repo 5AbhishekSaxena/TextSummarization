@@ -11,6 +11,7 @@ from cltk.stop.classical_hindi.stops import STOPS_LIST
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import CountVectorizer
 
+#fixme - not mine
 dataset = pd.read_csv("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/csv-files/newsfiles.csv")
 print(dataset.head())
 
@@ -24,7 +25,7 @@ for i in range(len(dataset)):
     stemmed = [t.generate_stem_words(word) for word in stemmed_array if not word in set(STOPS_LIST)]
     stemmed = ' '.join(stemmed)
     stemmed_dataset.append(stemmed)
-
+#fixme - not mine
 print(stemmed_dataset[0:5])
 
 cv = CountVectorizer()
@@ -50,7 +51,7 @@ plt.xlabel("No. of clusters")
 plt.ylabel("wcss")
 plt.show()
 
-
+#fixme - not mine
 print("Top terms per cluster: ")
 order_centroids = model.cluster_centers_.argsort()[:, ::-1]
 terms = cv.get_feature_names()

@@ -34,8 +34,7 @@ def classifier_builder(excel_file):
 
     average_precision = metrics.average_precision_score(y_test, y_pred)
 
-
-
+    # fixme - not mine
     print("Accuracy for the model: ", metrics.accuracy_score(y_test, y_pred))
     print("Precision score: ", metrics.precision_score(y_test, y_pred))
     print("Recall score: ", metrics.recall_score(y_test, y_pred))

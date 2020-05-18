@@ -27,12 +27,13 @@ class Tokenizer():
 		self.clean_text()
 
 
-
+	#fixme - not mine
 	def generate_sentences(self):
 		'''generates a list of sentences'''
 		text=self.text
 		self.sentences=text.split(u"।")
 
+	# fixme - not mine
 	def print_sentences(self,sentences=None):
 		if sentences:
 			for i in sentences:
@@ -91,6 +92,7 @@ class Tokenizer():
 		#remove hyphenated words
 		self.hyphenated_tokens()
 
+	# fixme - not mine
 	def print_tokens(self,print_list=None):
 		'''done'''
 		if print_list is None:
@@ -138,11 +140,13 @@ class Tokenizer():
 
 		return freq
 
+	# fixme - not mine
 	def print_freq_dict(self,freq):
 		'''done'''
 		for i in freq.keys():
 			print (i.encode('utf-8'),',',freq[i])
 
+	# fixme - not mine
 	def generate_stem_words(self,word):
 		suffixes = {
     1: [u"ो",u"े",u"ू",u"ु",u"ी",u"ि",u"ा"],
