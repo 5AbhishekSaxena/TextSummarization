@@ -17,10 +17,6 @@ def classifier_builder(excel_file):
     custom_dataset = pd.read_excel(excel_file, names=columns)
     custom_dataset = custom_dataset._get_numeric_data()
 
-    # put the numeric column names in a python list
-    numeric_headers = list(custom_dataset.columns.values)
-
-    # create a numpy array with the numeric values for input into scikit-learn
     feature_list = np.array(custom_dataset)
 
     # print(feature_list)
@@ -66,45 +62,19 @@ def generate_summary(test_excel_file):
 
     # print(custom_dataset.head())
 
-    # remove the non-numeric columns
     custom_dataset = custom_dataset._get_numeric_data()
 
-    # put the numeric column names in a python list
     numeric_headers = list(custom_dataset.columns.values)
 
-    # create a numpy array with the numeric values for input into scikit-learn
     feature_list = np.array(custom_dataset)
 
     # print(feature_list)
 
     X_test = feature_list[:, [0, 1, 2, 3, 4, 5, 6]]
 
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
-
     abc = AdaBoostClassifier(n_estimators=55, learning_rate=0.5)
 
-    # model = abc.fit(X_train, y_train)
-
-    # Predict the response for test dataset
     y_pred = model.predict(X_test)
-
-    print(y_pred.tolist())
 
     return y_pred
 
-
-
-
-
-
-
-
-
-
-# summarized_sentence = ""
-#
-# for i in y_pred:
-#     if (y_pred[i] == 1):
-#         summarized_sentence += X_test[i]
-#
-# print(summarized_sentence)

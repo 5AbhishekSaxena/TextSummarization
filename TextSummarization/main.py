@@ -1,6 +1,7 @@
 import csv
 import time
 
+from TextSummarization import SentimentAnalysis
 from TextSummarization.AdaBoostModel import generate_summary
 from TextSummarization.ProcessSentences import ProcessSentences
 from TextSummarization.ProcessStopwords import processStopwords
@@ -12,11 +13,10 @@ from TextSummarization.BaseNewsArticle import BaseNewsArticle
 from textblob import TextBlob
 from TextSummarization.nltk_implementation import word_tokenize
 from TextSummarization.nltk_implementation import sentence_tokenizer
-#from TextSummarization.SentimentAnalysis import SentimentAnalysis
 from TextSummarization.exportToExcel import ExportToExcel
 
 
-with open('dataset/test_case_1.csv') as csv_file:
+with open('dataset/test_case_2.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     article_count = 0
     correct = 0
@@ -162,8 +162,8 @@ with open('dataset/test_case_1.csv') as csv_file:
 
                 print("Generated summary is given as follows: \n\n", summary)
 
-                #exportToExcel.save_sentences(summary)
-
+                #exportSummary.saveSummary(summary)
+                print("Sentiment of the news is: ", SentimentAnalysis.determineSentiment(summary))
             #     article_count += 1
             #
             # if article_count == 6:
