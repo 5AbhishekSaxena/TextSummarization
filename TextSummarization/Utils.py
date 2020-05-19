@@ -1,22 +1,8 @@
-from dateutil.parser import parse
 from TextSummarization.Constants import Type
 from textblob import TextBlob
 from difflib import SequenceMatcher
 
 
-def is_date(string, fuzzy=False):
-    """
-    Return whether the string can be interpreted as a date.
-
-    :param string: str, string to check for date
-    :param fuzzy: bool, ignore unknown tokens in string if True
-    """
-    try:
-        parse(string, fuzzy=fuzzy)
-        return True
-
-    except ValueError:
-        return False
 
 def getKeyLimitFromType(type: int):
     return {Type.DEFAULT: 10,
@@ -68,19 +54,6 @@ def countNumberOfWords(string) -> int:
 
 def similar(string1, string2):
     return SequenceMatcher(None, string1, string2).ratio()
-
-
-import random, string
-
-
-def randomword(): # fixme - remove
-    length = randomnumber()
-    letters = """#$%&*@^!"""
-    return ''.join(random.choice(letters) for i in range(length))
-
-
-def randomnumber(): # fixme - remove
-    return random.randint(3, 10)
 
 
 def isEnglish(s):

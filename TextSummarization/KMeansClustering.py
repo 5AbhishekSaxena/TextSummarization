@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC
 from TextSummarization.HindiTokenizer import Tokenizer
-dataset = pd.read_csv("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/csv-files/newsfiles.csv")
+dataset = pd.read_csv("dataset/manual-dataset/csv-files/newsfiles.csv")
 
 
 def determineSentiment(summary):
@@ -24,7 +24,7 @@ def determineSentiment(summary):
     X = cv.fit_transform(stemmed_dataset)
 
     sent = pd.read_csv(
-        "/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/csv-files/sentilist.csv")
+        "dataset/manual-dataset/csv-files/sentilist.csv")
 
 
     y = np.array(sent)

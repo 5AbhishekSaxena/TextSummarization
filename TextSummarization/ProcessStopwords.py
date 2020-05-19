@@ -1,4 +1,3 @@
-import re
 from TextSummarization import nltk_implementation as ck
 from TextSummarization import BaseNewsArticle as bsa
 

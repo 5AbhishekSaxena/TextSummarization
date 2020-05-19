@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import codecs
 import re
 
@@ -43,7 +42,6 @@ class Tokenizer():
 
 
 	def clean_text(self):
-		'''not working'''
 		text=self.text
 		text=re.sub(r'(\d+)',r'',text)
 		text=text.replace(u',','')
@@ -76,7 +74,6 @@ class Tokenizer():
 
 
 	def tokenize(self):
-		'''done'''
 		if not self.sentences:
 			self.generate_sentences()
 
@@ -92,7 +89,6 @@ class Tokenizer():
 		self.hyphenated_tokens()
 
 	def print_tokens(self,print_list=None):
-		'''done'''
 		if print_list is None:
 			for i in self.tokens:
 				print (i.encode('utf-8'))
@@ -102,19 +98,15 @@ class Tokenizer():
 
 
 	def tokens_count(self):
-		'''done'''
 		return len(self.tokens)
 
 	def sentence_count(self):
-		'''done'''
 		return len(self.sentences)
 
 	def len_text(self):
-		'''done'''
 		return len(self.text)
 
 	def concordance(self,word):
-		'''done'''
 		if not self.sentences:
 			self.generate_sentences()
 		sentence=self.sentences
@@ -126,7 +118,6 @@ class Tokenizer():
 		return concordance_sent
 
 	def generate_freq_dict(self):
-		'''done'''
 		freq={}
 		if not self.tokens:
 			self.tokenize()
@@ -139,7 +130,6 @@ class Tokenizer():
 		return freq
 
 	def print_freq_dict(self,freq):
-		'''done'''
 		for i in freq.keys():
 			print (i.encode('utf-8'),',',freq[i])
 
@@ -194,22 +184,11 @@ class Tokenizer():
 
 if __name__=="__main__":
 	t=Tokenizer('''वाशिंगटन: दुनिया के सबसे शक्तिशाली देश के राष्ट्रपति बराक ओबामा ने प्रधानमंत्री नरेंद्र मोदी के संदर्भ में 'टाइम' पत्रिका में लिखा, "नरेंद्र मोदी ने अपने बाल्यकाल में अपने परिवार की सहायता करने के लिए अपने पिता की चाय बेचने में मदद की थी। आज वह दुनिया के सबसे बड़े लोकतंत्र के नेता हैं और गरीबी से प्रधानमंत्री तक की उनकी जिंदगी की कहानी भारत के उदय की गतिशीलता और क्षमता को परिलक्षित करती है।''')
-	#t=Tokenizer()
-	#t.read_from_file('sample.txt')
-	#print type(t.text)
-	#y=clean(t.text)
-	#print y
 	t.generate_sentences()
-	#t.print_sentences()
 	t.tokenize()
-	#t.print_tokens()
 	f=t.generate_freq_dict()
-	#t.print_freq_dict(f)
 	s=t.concordance('बातों')
-	#t.print_sentences(s)
 	f=t.generate_stem_dict()
-	# for i in f.keys():
-	# 	print i.encode('utf-8'),f[i].encode('utf-8')
 	z=t.remove_stop_words()
 	t.print_tokens(t.final_tokens)
 	print (t.sentence_count(),t.tokens_count(),t.len_text())

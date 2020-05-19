@@ -8,7 +8,7 @@ class BaseNewsArticle:
 
     def __init__(self, article: str, heading="", summary=""):
         self.heading = heading
-        self.article = article  # .replace("[^a-zA-Z]", " ")
+        self.article = article
         self.summary = summary
 
     def getHeading(self):

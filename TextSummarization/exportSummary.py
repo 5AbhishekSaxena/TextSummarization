@@ -1,7 +1,6 @@
 import xlrd
 import xlwt
 from xlwt import Workbook
-from xlwt.compat import xrange
 
 
 class ExportSummary:
