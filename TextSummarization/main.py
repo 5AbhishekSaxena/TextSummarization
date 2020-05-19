@@ -1,13 +1,12 @@
 import csv
 import time
 
-from TextSummarization import SentimentAnalysis
 from TextSummarization.AdaBoostModel import generate_summary
 from TextSummarization.ProcessSentences import ProcessSentences
 from TextSummarization.ProcessStopwords import processStopwords
+from TextSummarization.SentimentAnalysis import determineSentiment
 from TextSummarization.Utils import getDictionaryAsString
 from TextSummarization.Utils import isEnglish
-# from TextSummarization.Utils import helper
 from TextSummarization.Constants import Type, DictionaryType
 from TextSummarization.BaseNewsArticle import BaseNewsArticle
 from textblob import TextBlob
@@ -28,14 +27,12 @@ with open('dataset/test_case_2.csv') as csv_file:
             print(f'Column names are {", ".join(row)}')
             article_count += 1
         elif len(row[1].strip()) > 5 and "VIDEO" not in row[2] \
-                and isEnglish(TextBlob(row[2][:10])) is not True:
+                and isEnglish(str(TextBlob(row[2][:10]))) is not True:
 
             heading, given_summary, article = row[0], row[1], row[2]
             try:
                 if "।" in article:
-                    article = article.replace("।", ".")  # FIXME for summarization
-               # temp = helper(article)
-                # print(f'Summary using library:\n{generated_summary}\n')
+                    article = article.replace("।", ".")
             except ValueError as e:
                 continue
                 # print(f'Error raised: {e}')
@@ -47,45 +44,32 @@ with open('dataset/test_case_2.csv') as csv_file:
                 processArticle = ProcessSentences(baseNewsArticle)
                 sentences_in_article = processArticle.getTokenizedSentences()
                 numberOfSentences = len(sentences_in_article)
-                print("Number of sentences in the articles: ", numberOfSentences)
-                # if(numberOfSentences > 20):
-                #     continue
-                #print(f'Generated Summary: \n{temp}') #fixme uncomment later
+
                 e1 = time.process_time()
                 lengthOfHeading = len(heading.strip().split(" "))
                 numberOfWordsInArticle = baseNewsArticle.getTotalNumberOfWords()
-                # e2 = time.process_time() - e1
-                #print(f'Time-total number of words: {time.process_time() - e1}') fixme
+
                 e1 = time.process_time()
                 numberOfImpWords = len(processStopwords(baseNewsArticle))
-                #print(f'Time-total number of imp words: {time.process_time() - e1}') fixme
                 e1 = time.process_time()
 
-                # processArticle.generate_summary()
-                #generated_summary = convertListToString(temp) fixme
-                # numberOfSentences = len(processSentences.getTokenizedSentences()) fixme: uncomment later
-                #print(f'Time-total number of sentences: {time.process_time() - e1}') fixme
                 e1 = time.process_time()
                 termFrequencyDictionary = processArticle.calculateTermFrequency()
                 termFrequency = getDictionaryAsString(termFrequencyDictionary,
                                                       Type.TERM_FREQUENCY)
-                #print(f'Time-term frequency: {time.process_time() - e1}') fixme
                 e1 = time.process_time()
                 inverseDocumentFrequencyDictionary = processArticle.calculateInverseDocumentFrequency()
                 inverseDocumentFrequency = getDictionaryAsString(inverseDocumentFrequencyDictionary,
                                                                  Type.INVERSE_DOCUMENT_FREQUENCY)
-                #print(f'Time-idf: {time.process_time() - e1}') fixme
                 e1 = time.process_time()
 
                 termUniqueness = getDictionaryAsString(processArticle.calculateTermUniqueness(),
                                                        Type.TERM_UNIQUENESS)
-                #print(f'Time-term uniqueness: {time.process_time() - e1}') fixme
                 e1 = time.process_time()
                 numberOfStopWordsRemoved = numberOfWordsInArticle - numberOfImpWords
                 lengthOfGivenSummary = len(given_summary.strip().split(" "))
 
                 e2 = time.process_time()
-                #print(f'Time: {e2 - e1}') fixme
                 numberOfWordsUsingCLTKLib = len(word_tokenize(baseNewsArticle.getArticle()))
                 numberOfSentencesUsingCLTKLib = len(sentence_tokenizer(baseNewsArticle.getArticle()))
 
@@ -96,15 +80,6 @@ with open('dataset/test_case_2.csv') as csv_file:
 
                 aggregateIDF = processArticle.getAggregateIDF(inverseDocumentFrequencyDictionary)
                 aggregateTF = processArticle.getAggregateTF(termFrequencyDictionary)
-
-                #print(f' Total number of wortds in article: {numberOfWordsInArticle}' fixme
-                 #     f'\nNumber of imp words: {numberOfImpWords}')
-                # try:
-                #         sentimentBlob = TextBlob(str(TextBlob(convertListToString(generated_summary)).translate())).sentiment
-                # except NotTranslated:
-                #     sentimentBlob = 0.0
-                # if sentimentBlob is TextBlob:
-                #     print(f'\n\nSentimentBlob: {sentimentBlob}\n\n') fixme
 
                 featureDictionaries = dict()
                 featureDictionaries[DictionaryType.NOUN_FEATURE] = nounFeatureScoring
@@ -119,14 +94,8 @@ with open('dataset/test_case_2.csv') as csv_file:
 
                 useful_sentences = generate_summary("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/article - 1.xlsx")
 
-                #exportToExcel.csvFromExcel() fixme
-
                 if numberOfSentences < 10:
                     print(f'Sentences: {baseNewsArticle.getArticle()}')
-
-                #print(f'Sentiment: {SentimentAnalysis(generated_summary).determineSentiment()}')
-
-                #print("=====" * 50 + '\n')
 
                 summary = ""
 
@@ -141,6 +110,8 @@ with open('dataset/test_case_2.csv') as csv_file:
                     f'Article #{article_count}\nHeading:\n{heading}'
                     f'\n\nArticle:\n{article}\n')
                 print("\nGenerated summary is given as follows: \n\n", summary)
+
+                determineSentiment(summary)
 
                 print(f'\n\nMetaData.... '
                       f'\nHeading: {lengthOfHeading} '
@@ -163,12 +134,3 @@ with open('dataset/test_case_2.csv') as csv_file:
                       f'{relevanceToTitleFeature}'
                       f'\nGiven Summary:{lengthOfGivenSummary}'
                       )
-
-                #exportSummary.saveSummary(summary)
-                print("Sentiment of the news is: ", SentimentAnalysis.determineSentiment(summary))
-            #     article_count += 1
-            #
-            # if article_count == 6:
-            #     break
-
-#print(f'Processed {article_count} articles.')

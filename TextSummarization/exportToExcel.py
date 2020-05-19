@@ -1,7 +1,6 @@
 import csv
 
 import xlrd
-import xlwt
 from xlwt import Workbook
 from xlwt.compat import xrange
 
@@ -16,12 +15,7 @@ class ExportToExcel:
         self.wb = Workbook()
         # Set 1st Row
         self.sheet = self.wb.add_sheet('Sheet 1')
-        # self.sheet.write(0, 0, 'Sentences')
-        # self.sheet.write(0, 1, 'Noun Feature')
-        # self.sheet.write(0, 2, 'Sentence Length Feature')
-        # self.sheet.write(0, 3, 'Number Feature')
-        # self.sheet.write(0, 4, 'Relevance to title Feature')
-        # self.sheet.write(0, 5, 'Sentence Usefulness')
+
 
     def saveData(self):
         nounFeatureScoring = dict(self.featureDictionary[DictionaryType.NOUN_FEATURE])
@@ -63,16 +57,4 @@ class ExportToExcel:
 
         csv_file.close()
 
-
-    def save_sentences(self, summary):
-        numberOfSentences = len(summary)
-        row_count = 0
-
-        workbook = Workbook()
-        sheet = workbook.add_sheet('Sheet 1')
-
-        for i in summary:
-            sheet.write(row_count, 0, i)
-
-        workbook.save(f'dataset/manual-dataset/summary.xlsx')
 

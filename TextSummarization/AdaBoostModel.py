@@ -1,14 +1,9 @@
-# Load libraries
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn import datasets
-# Import train_test_split function
 from sklearn.model_selection import train_test_split
-# Import scikit-learn metrics module for accuracy calculation
 from sklearn import metrics
 import pandas as pd
 import numpy as np
-import matplotlib as plt
-import seaborn as sb
+
 
 
 def classifier_builder(excel_file):
@@ -18,8 +13,6 @@ def classifier_builder(excel_file):
     custom_dataset = custom_dataset._get_numeric_data()
 
     feature_list = np.array(custom_dataset)
-
-    # print(feature_list)
 
     X = feature_list[:, [0, 1, 2, 3, 4, 5, 6]]
     y = feature_list[:, 7]
@@ -34,7 +27,6 @@ def classifier_builder(excel_file):
 
     average_precision = metrics.average_precision_score(y_test, y_pred)
 
-    # fixme - not mine
     print("Accuracy for the model: ", metrics.accuracy_score(y_test, y_pred))
     print("Precision score: ", metrics.precision_score(y_test, y_pred))
     print("Recall score: ", metrics.recall_score(y_test, y_pred))
@@ -59,19 +51,11 @@ def generate_summary(test_excel_file):
                'Inverse Document Term Frequency Feature', 'Term Frequency Feature']
     custom_dataset = pd.read_excel(test_excel_file, names=columns)
 
-    # print(custom_dataset.head())
-
     custom_dataset = custom_dataset._get_numeric_data()
-
-    numeric_headers = list(custom_dataset.columns.values)
 
     feature_list = np.array(custom_dataset)
 
-    # print(feature_list)
-
     X_test = feature_list[:, [0, 1, 2, 3, 4, 5, 6]]
-
-    abc = AdaBoostClassifier(n_estimators=55, learning_rate=0.5)
 
     y_pred = model.predict(X_test)
 

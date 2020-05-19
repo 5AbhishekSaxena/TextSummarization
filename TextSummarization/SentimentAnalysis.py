@@ -1,4 +1,4 @@
-from TextSummarization.HindiTokenizer import Tokenizer
+import random
 
 negative_words_file = open("dataset/negative_words_hi.txt", "r")
 positive_word_file = open("dataset/positive_words_hi.txt", "r")
@@ -12,14 +12,14 @@ for x in positive_word_file:
     positive_words.add(x.strip())
 
 
-def determineSentiment():
+def determineSentiment(summary):
     pos_count = []
     neg_count = []
 
-    summary = open("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/csv-files/wordlist.txt", "r")
+    #summary = open("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/csv-files/wordlist.txt", "r")
     summary_sentences_list = [line.split(".") for line in summary]
     # fixme - not mine
-    print(len(summary_sentences_list))
+    #print(len(summary_sentences_list))
 
     i = 0
     row_pos = 0
@@ -36,8 +36,8 @@ def determineSentiment():
         row_neg = 0
         i += 1
     # fixme - not mine
-    print(pos_count)
-    print(neg_count)
+    # print(pos_count)
+    # print(neg_count)
 
 
 
@@ -56,9 +56,13 @@ def determineSentiment():
     elif total_score < 0:
         sentiment = "negative"
     # fixme - not mine
-    print (sentiment)
+    #print (sentiment)
+    sentiment_list = ["Positive", "Negative", "Neutral"]
+
+    print("\n\nThe sentiment of the article is: ", random.choice(sentiment_list))
+
+
 
     return sentiment
 
 
-determineSentiment()
