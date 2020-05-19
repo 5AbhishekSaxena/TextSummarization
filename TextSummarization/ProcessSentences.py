@@ -32,7 +32,7 @@ class ProcessSentences:
     # 1
     def calculateTermFrequency(self):
         if self.newsArticle.getArticle() == "":
-            print("No Article from calculateTermFrequency")
+            print("No Article from calculateTermFrequency") #fixme - printed when there's no article in the basenewsArticle object
             return
 
         termCounterDictionary = dict()

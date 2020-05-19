@@ -89,10 +89,21 @@ def similar(string1, string2):
 
 import random, string
 
-def randomword():
+
+def randomword(): # fixme - remove
     length = randomnumber()
     letters = """#$%&*@^!"""
     return ''.join(random.choice(letters) for i in range(length))
 
-def randomnumber():
+
+def randomnumber(): # fixme - remove
     return random.randint(3, 10)
+
+
+def isEnglish(s):
+    try:
+        s.encode(encoding='utf-8').decode('ascii')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True

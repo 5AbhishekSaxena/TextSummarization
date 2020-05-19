@@ -18,7 +18,7 @@ def determineSentiment():
 
     summary = open("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/csv-files/wordlist.txt", "r")
     summary_sentences_list = [line.split(".") for line in summary]
-
+    # fixme - not mine
     print(len(summary_sentences_list))
 
     i = 0
@@ -35,7 +35,7 @@ def determineSentiment():
         row_pos = 0
         row_neg = 0
         i += 1
-
+    # fixme - not mine
     print(pos_count)
     print(neg_count)
 
@@ -55,7 +55,7 @@ def determineSentiment():
         sentiment = "positive"
     elif total_score < 0:
         sentiment = "negative"
-
+    # fixme - not mine
     print (sentiment)
 
     return sentiment

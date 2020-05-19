@@ -13,6 +13,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC
 from sklearn.mixture import GaussianMixture
 
+#fixme - not mine
 dataset = pd.read_csv("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/csv-files/newsfiles.csv")
 print(dataset.head())
 
@@ -26,7 +27,7 @@ for i in range(len(dataset)):
     stemmed = [t.generate_stem_words(word) for word in stemmed_array if not word in set(STOPS_LIST)]
     stemmed = ' '.join(stemmed)
     stemmed_dataset.append(stemmed)
-
+#fixme - not mine
 print(stemmed_dataset[0:5])
 
 cv = CountVectorizer()
@@ -65,7 +66,7 @@ plt.ylabel("wcss")
 plt.show()
 plt.imshow()
 
-
+#fixme - not mine
 print("Top terms per cluster: ")
 order_centroids = model.cluster_centers_.argsort()[:, ::-1]
 terms = cv.get_feature_names()
