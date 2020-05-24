@@ -7,8 +7,11 @@ import numpy as np
 
 
 def classifier_builder(excel_file):
-    columns = ['Sentence ID', 'Noun Feature', 'Sentence Length Feature', 'Number Feature', 'Relevance to title Feature',
-               'Inverse Document Term Frequency Feature', 'Term Frequency Feature', 'Sentence Usefulness']
+    columns = ['Sentence ID', 'Noun Feature',
+               'Sentence Length Feature', 'Number Feature',
+               'Relevance to title Feature',
+               'Inverse Document Term Frequency Feature',
+               'Term Frequency Feature', 'Sentence Usefulness']
     custom_dataset = pd.read_excel(excel_file, names=columns)
     custom_dataset = custom_dataset._get_numeric_data()
 
@@ -39,16 +42,16 @@ def classifier_builder(excel_file):
     return adamodel
 
 
-
-
-
 def generate_summary(test_excel_file):
     train_excel_file = "/Users/rajeshwari/Desktop/testarticles.xlsx"
 
     model = classifier_builder(train_excel_file)
 
-    columns = ['Sentence ID', 'Noun Feature', 'Sentence Length Feature', 'Number Feature', 'Relevance to title Feature',
-               'Inverse Document Term Frequency Feature', 'Term Frequency Feature']
+    columns = ['Sentence ID', 'Noun Feature',
+               'Sentence Length Feature', 'Number Feature',
+               'Relevance to title Feature',
+               'Inverse Document Term Frequency Feature',
+               'Term Frequency Feature']
     custom_dataset = pd.read_excel(test_excel_file, names=columns)
 
     custom_dataset = custom_dataset._get_numeric_data()

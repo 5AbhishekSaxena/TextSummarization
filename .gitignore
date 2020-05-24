@@ -1,3 +1,35 @@
-/TextSummarization/dataset/
 /.idea/
-/TextSummarization/hindi-tokenizer-master/
+/TextSummarization/dataset/negative_words_hi.txt
+/TextSummarization/dataset/positive_words_hi.txt
+/TextSummarization/dataset/test_data.csv
+/TextSummarization/dataset/manual-dataset/article - 1.xlsx
+/TextSummarization/dataset/manual-dataset/article - 2.xlsx
+/TextSummarization/dataset/manual-dataset/article - 3.xlsx
+/TextSummarization/dataset/manual-dataset/article - 4.xlsx
+/TextSummarization/dataset/manual-dataset/article - 5.xlsx
+/TextSummarization/dataset/manual-dataset/article - 6.xlsx
+/TextSummarization/dataset/manual-dataset/article - 7.xlsx
+/TextSummarization/dataset/manual-dataset/article - 8.xlsx
+/TextSummarization/dataset/manual-dataset/article - 9.xlsx
+/TextSummarization/dataset/manual-dataset/article - 10.xlsx
+/TextSummarization/dataset/manual-dataset/article - 11.xlsx
+/TextSummarization/dataset/manual-dataset/article - 12.xlsx
+/TextSummarization/dataset/manual-dataset/article - 13.xlsx
+/TextSummarization/dataset/manual-dataset/article - 14.xlsx
+/TextSummarization/dataset/manual-dataset/article - 15.xlsx
+/TextSummarization/dataset/manual-dataset/articles.xlsx
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 1.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 2.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 3.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 4.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 5.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 6.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 7.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 8.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 9.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 10.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 11.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 12.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 13.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 14.csv
+/TextSummarization/dataset/manual-dataset/csv-files/csv file - 15.csv

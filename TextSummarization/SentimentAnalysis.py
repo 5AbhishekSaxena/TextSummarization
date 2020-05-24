@@ -33,9 +33,6 @@ def determineSentiment(summary):
         row_neg = 0
         i += 1
 
-
-
-
     total_score = 0
 
     for word in summary:

@@ -1,4 +1,5 @@
 import csv
+from textblob import TextBlob
 import time
 
 from TextSummarization.AdaBoostModel import generate_summary
@@ -9,7 +10,6 @@ from TextSummarization.Utils import getDictionaryAsString
 from TextSummarization.Utils import isEnglish
 from TextSummarization.Constants import Type, DictionaryType
 from TextSummarization.BaseNewsArticle import BaseNewsArticle
-from textblob import TextBlob
 from TextSummarization.nltk_implementation import word_tokenize
 from TextSummarization.nltk_implementation import sentence_tokenizer
 from TextSummarization.exportToExcel import ExportToExcel
@@ -92,7 +92,7 @@ with open('dataset/test_case_2.csv') as csv_file:
                 exportToExcel = ExportToExcel(article_count, featureDictionaries)
                 exportToExcel.saveData()
 
-                useful_sentences = generate_summary("/Users/rajeshwari/Documents/TextSummarization/TextSummarization/dataset/manual-dataset/article - 1.xlsx")
+                useful_sentences = generate_summary("dataset/manual-dataset/article - 1.xlsx")
 
                 if numberOfSentences < 10:
                     print(f'Sentences: {baseNewsArticle.getArticle()}')
